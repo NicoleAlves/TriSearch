@@ -55,22 +55,6 @@ public class ScoreController : MonoBehaviour {
 		}
 	}
 
-	public static bool HasConnection()
-	{
-		try
-		{
-			using (var client = new WebClient())
-				using (var stream = new WebClient().OpenRead("http://www.google.com"))
-			{
-				return true;
-			}
-		}
-		catch
-		{
-			return false;
-		}
-	}
-
 	bool CheckConnection(string URL)
 	{
 		try
@@ -99,13 +83,13 @@ public class ScoreController : MonoBehaviour {
 			WWW webRequest = new WWW (db_url + "saveScore.php", form);
 			yield return webRequest;
 		} else {
-			yield return null;
+			yield return SaveScores();
 			error.GetComponent<Animator> ().Play ("ConnectionStatus_Error");
 		}
 	}
 
 	IEnumerator LoadScores() {
-		if (CheckConnection(db_url + "saveScore.php")) {
+		if (CheckConnection(db_url + "loadScore.php")) {
 			error.GetComponent<Animator> ().Play ("ConnectionStatus_Loading");
 			WWW webRequest = new WWW (db_url + "loadScore.php");
 			yield return webRequest;
